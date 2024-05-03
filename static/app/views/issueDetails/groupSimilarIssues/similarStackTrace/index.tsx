@@ -14,6 +14,13 @@ import {t} from 'sentry/locale';
 import type {SimilarItem} from 'sentry/stores/groupingStore';
 import GroupingStore from 'sentry/stores/groupingStore';
 import {space} from 'sentry/styles/space';
+import {
+  EventOrGroupType,
+  GroupStatus,
+  IssueCategory,
+  IssueType,
+  PriorityLevel,
+} from 'sentry/types';
 import type {Project} from 'sentry/types/project';
 import {useNavigate} from 'sentry/utils/useNavigate';
 import usePrevious from 'sentry/utils/usePrevious';
@@ -41,6 +48,65 @@ const DataConsentBanner = HookOrDefault({
   defaultComponent: null,
 });
 function SimilarStackTrace({params, location, project}: Props) {
+  const stubbedItems = {
+    similar: [
+      {
+        issue: {
+          activity: [],
+          annotations: [],
+          assignedTo: null,
+          count: '327482',
+          culprit: 'fetchData(app/components/group/suggestedOwners/suggestedOwners)',
+          firstSeen: '2019-04-05T19:44:05.963Z',
+          filtered: null,
+          hasSeen: false,
+          id: '1',
+          isBookmarked: false,
+          isPublic: false,
+          isSubscribed: false,
+          isUnhandled: false,
+          issueCategory: IssueCategory.ERROR,
+          issueType: IssueType.ERROR,
+          lastSeen: '2019-04-11T01:08:59Z',
+          level: 'warning',
+          logger: null,
+          metadata: {function: 'fetchData', type: 'RequestError'},
+          numComments: 0,
+          participants: [],
+          permalink: 'https://foo.io/organizations/foo/issues/1234/',
+          platform: 'javascript',
+          pluginActions: [],
+          pluginContexts: [],
+          pluginIssues: [],
+          priority: PriorityLevel.MEDIUM,
+          priorityLockedAt: null,
+          seenBy: [],
+          shareId: '',
+          shortId: 'JAVASCRIPT-6QS',
+          stats: {
+            '24h': [
+              [1517281200, 2],
+              [1517310000, 1],
+            ],
+            '30d': [
+              [1514764800, 1],
+              [1515024000, 122],
+            ],
+          },
+          status: GroupStatus.UNRESOLVED,
+          statusDetails: {},
+          subscriptionDetails: null,
+          title: 'RequestError: GET /issues/ 404',
+          type: EventOrGroupType.ERROR,
+          userCount: 35097,
+          userReportCount: 0,
+        },
+      },
+    ],
+    filtered: [],
+    pageLinks: [],
+  };
+
   const {orgId, groupId} = params;
 
   const [items, setItems] = useState<ItemState>({
@@ -208,17 +274,15 @@ function SimilarStackTrace({params, location, project}: Props) {
           </EmptyStateWarning>
         </Panel>
       )}
-      {status === 'ready' && hasSimilarItems && !hasSimilarityEmbeddingsFeature && (
-        <List
-          items={items.similar}
-          filteredItems={items.filtered}
-          onMerge={handleMerge}
-          orgId={orgId}
-          project={project}
-          groupId={groupId}
-          pageLinks={items.pageLinks}
-        />
-      )}
+      <List
+        items={stubbedItems.similar}
+        filteredItems={items.filtered}
+        onMerge={handleMerge}
+        orgId={orgId}
+        project={project}
+        groupId={groupId}
+        pageLinks={items.pageLinks}
+      />
       {status === 'ready' && hasSimilarItems && hasSimilarityEmbeddingsFeature && (
         <List
           items={items.similar.concat(items.filtered)}

@@ -124,28 +124,8 @@ class Feature extends Component<Props> {
     };
   }
 
-  hasFeature(feature: string, features: AllFeatures) {
-    // Array of feature strings
-    const {configFeatures, organization, project} = features;
-
-    // Check config store first as this overrides features scoped to org or
-    // project contexts.
-    if (configFeatures.includes(feature)) {
-      return true;
-    }
-
-    const shouldMatchOnlyProject = feature.match(/^projects:(.+)/);
-    if (shouldMatchOnlyProject) {
-      return project.includes(shouldMatchOnlyProject[1]);
-    }
-
-    const shouldMatchOnlyOrg = feature.match(/^organizations:(.+)/);
-    if (shouldMatchOnlyOrg) {
-      return organization.includes(shouldMatchOnlyOrg[1]);
-    }
-
-    // default, check all feature arrays
-    return organization.includes(feature) || project.includes(feature);
+  hasFeature(_feature: string, _features: AllFeatures) {
+    return true;
   }
 
   render() {
