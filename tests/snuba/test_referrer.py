@@ -5,6 +5,7 @@ from sentry.snuba.referrer import Referrer, validate_referrer
 from sentry.tsdb.base import TSDBModel
 
 
+# Test to validate database teardown behavior with unittest.TestCase in CI
 class ReferrerTest(TestCase):
     @patch("sentry.snuba.referrer.logger.warning")
     def test_referrer_validate_not_exist(self, warn_log: MagicMock) -> None:
